@@ -1,5 +1,5 @@
-import { ProductState } from './../../core/models/product.state';
-import { loadedProducts, loadProducts } from './../actions/products.action';
+import { ProductState } from '../../core/models/product.state';
+import { loadedProducts, loadProducts } from '../actions/product.actions';
 import { createReducer, on } from '@ngrx/store';
 
 

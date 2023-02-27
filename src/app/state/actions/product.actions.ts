@@ -6,6 +6,6 @@ export const loadProducts = createAction(
 );
 
 export const loadedProducts = createAction(
-    '[Products list] Loaded success',
+    '[Products list] Products Loaded Success',
     props<{ products: ProductModel[] }>()
 )
