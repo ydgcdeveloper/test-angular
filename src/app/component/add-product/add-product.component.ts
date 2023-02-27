@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ProductService } from 'src/app/service/product/product.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { loadedProducts } from 'src/app/state/actions/products.action';
+import { loadedProducts } from 'src/app/state/actions/product.actions';
 
 @Component({
   selector: 'app-add-product',

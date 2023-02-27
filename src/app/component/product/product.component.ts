@@ -1,4 +1,4 @@
-import { selectProductsList } from './../../state/selectors/products.selector';
+import { selectProductsList } from '../../state/selectors/product.selectors';
 import { AppState } from './../../state/app.state';
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';

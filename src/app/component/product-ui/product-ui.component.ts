@@ -1,10 +1,10 @@
-import { selectProductsList, selectProductsLoading } from './../../state/selectors/products.selector';
+import { selectProductsList, selectProductsLoading } from '../../state/selectors/product.selectors';
 import { Store } from '@ngrx/store';
 import { AppState } from './../../state/app.state';
 import { ProductModel } from './../../core/models/product.interface';
 import { Component, Input } from '@angular/core';
 import { ProductService } from 'src/app/service/product/product.service';
-import { loadedProducts, loadProducts } from 'src/app/state/actions/products.action';
+import { loadedProducts, loadProducts } from 'src/app/state/actions/product.actions';
 
 @Component({
   selector: 'app-product-ui',

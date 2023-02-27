@@ -3,10 +3,10 @@ import { Validator } from './../../validator/validator';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ProductModel } from 'src/app/core/models/product.interface';
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { loadedProducts } from 'src/app/state/actions/products.action';
+import { loadedProducts } from 'src/app/state/actions/product.actions';
 import { Store } from '@ngrx/store';
 import { ProductService } from 'src/app/service/product/product.service';
-import { selectProductsList } from 'src/app/state/selectors/products.selector';
+import { selectProductsList } from 'src/app/state/selectors/product.selectors';
 
 @Component({
   selector: 'app-edit-product',
@@ -35,7 +35,7 @@ export class EditProductComponent implements OnInit {
 
     this.productForm = this.formBuilder.group({
       name: [this.product?.name, [Validators.required, Validators.maxLength(20), Validators.pattern('[a-zA-Z0-9ÑñÁáÉéÍíÓóÚú ]*')]],
-      price: [this.product?.price, [Validators.required, Validators.min(this.minPrice), Validators.max(this.maxPrice)]],
+      price: [(this.product?.price).toFixed(2), [Validators.required, Validators.min(this.minPrice), Validators.max(this.maxPrice)]],
       serialNumber: [this.product?.serialNumber, [Validators.required, Validators.minLength(8), Validators.maxLength(8), Validators.pattern('[a-zA-Z0-9]*')]],
     }, 
     // { validator: Validator.checkNameDuplicated()}
