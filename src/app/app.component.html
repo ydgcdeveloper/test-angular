@@ -3,8 +3,9 @@
     <b class="text-center" *ngIf="(loading$ | async)">Loading...</b>
   </div>
   <div class="float-right mt-5 mr-6" *ngIf="!(loading$ | async)">
-    <button class="mx-1 rounded-md px-2 hover:bg-blue-700 text-white border border-1 border-blue-300 bg-blue-600">+
+    <button class="mx-1 rounded-md px-2 hover:bg-blue-700 text-white border border-1 border-blue-300 bg-blue-600" (click)="showModalAdd = true">+
       Add</button>
   </div>
   <app-product></app-product>
 </div>
+<app-add-product (showModalAdd)="showModalAdd = false" *ngIf="showModalAdd"></app-add-product>
