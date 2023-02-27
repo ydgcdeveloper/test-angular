@@ -1,0 +1,15 @@
+<div class="columns-4 m text-center py-1 px-2 hover:bg-slate-50">
+    <div class="text-left">
+        {{product.name}}
+    </div>
+    <div>
+        {{product.serialNumber}}
+    </div>
+    <div>
+        {{product.price | number: '1.2-2'}}
+    </div>
+    <div class="mx-auto">
+        <button class="mx-1 rounded-md px-2 hover:bg-green-700 text-white border border-1 border-green-300 bg-green-600">Edit</button>
+        <button class="mx-1 rounded-md px-2 hover:bg-red-700 text-white border border-1 border-red-300 bg-red-600">Delete</button>
+    </div>
+</div>

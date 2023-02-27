@@ -1,0 +1,17 @@
+<div *ngIf="(products$ | async)?.length" class="mt-10">
+    <div class="columns-4 font-bold text-lg border-b-2 text-center my-2 py-1">
+        <div>
+            Name
+        </div>
+        <div>
+            Serial number
+        </div>
+        <div>
+            Price
+        </div>
+        <div>
+            Actions
+        </div>
+    </div>
+    <app-product-ui [product]="product" *ngFor="let product of products$ | async"></app-product-ui>
+</div>
