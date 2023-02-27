@@ -13,6 +13,8 @@ import { loadedProducts } from 'src/app/state/actions/products.action';
 export class AddProductComponent {
   @Output() showModalAdd = new EventEmitter<boolean>(true);
   public productForm: FormGroup;
+  minPrice: number = 100;
+  maxPrice: number = 500;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -21,8 +23,8 @@ export class AddProductComponent {
   ) {
     this.productForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(20), Validators.pattern('[a-zA-Z0-9ÑñÁáÉéÍíÓóÚú ]*')]],
-      price: ['', [Validators.required, Validators.min(100), Validators.pattern('[a-zA-Z0-9]*')]],
-      serialNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
+      price: ['', [Validators.required, Validators.min(this.minPrice), Validators.max(this.maxPrice)]],
+      serialNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8), Validators.pattern('[a-zA-Z0-9]*')]],
     })
   }
 
