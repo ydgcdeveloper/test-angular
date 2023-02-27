@@ -1,6 +1,8 @@
+import { selectProductsList } from './../../state/selectors/product.selectors';
+import { Observable } from 'rxjs';
 import { ProductModel } from 'src/app/core/models/product.interface';
 import { Store } from '@ngrx/store';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/service/product/product.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { loadedProducts } from 'src/app/state/actions/product.actions';
@@ -10,11 +12,14 @@ import { loadedProducts } from 'src/app/state/actions/product.actions';
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.css']
 })
-export class AddProductComponent {
+export class AddProductComponent implements OnInit {
+
+  products$: Observable<any> = new Observable();
   @Output() showModalAdd = new EventEmitter<boolean>(true);
   public productForm: FormGroup;
   minPrice: number = 100;
   maxPrice: number = 500;
+  duplicatedName = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,6 +31,10 @@ export class AddProductComponent {
       price: ['', [Validators.required, Validators.min(this.minPrice), Validators.max(this.maxPrice)]],
       serialNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8), Validators.pattern('[a-zA-Z0-9]*')]],
     })
+  }
+
+  ngOnInit(): void {
+    this.products$ = this.store.select(selectProductsList);
   }
 
   get name() {
@@ -45,7 +54,6 @@ export class AddProductComponent {
   }
 
   addProduct() {
-    this.showModalAdd.emit(false);
 
     const product: ProductModel = {
       name: this.name?.value,
@@ -53,12 +61,26 @@ export class AddProductComponent {
       serialNumber: this.serialNumber?.value,
     };
 
-    try {
-      this.productService.addProduct(product).then((value) => {
-        this.getProducts();
-      });
-    } catch (error) {
-    }
+    this.products$.subscribe((value) => {
+      this.duplicatedName = (value as Array<ProductModel>).map((product: ProductModel) => product.name).filter((name) => {
+        return name == product.name;
+      })
+        .length > 0;
+      if (!this.duplicatedName) {
+        this.showModalAdd.emit(false);
+
+        try {
+          try {
+            this.productService.addProduct(product).then((value) => {
+              this.getProducts();
+            });
+          } catch (error) {
+          }
+        } catch (error) {
+        }
+      }
+    })
+      .unsubscribe();
   }
 
   getProducts() {

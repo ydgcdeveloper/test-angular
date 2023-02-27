@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Validator } from './../../validator/validator';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
@@ -22,6 +23,7 @@ export class EditProductComponent implements OnInit {
   public productForm: FormGroup;
   minPrice: number = 100;
   maxPrice: number = 500;
+  duplicatedName = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,9 +39,7 @@ export class EditProductComponent implements OnInit {
       name: [this.product?.name, [Validators.required, Validators.maxLength(20), Validators.pattern('[a-zA-Z0-9ÑñÁáÉéÍíÓóÚú ]*')]],
       price: [(this.product?.price).toFixed(2), [Validators.required, Validators.min(this.minPrice), Validators.max(this.maxPrice)]],
       serialNumber: [this.product?.serialNumber, [Validators.required, Validators.minLength(8), Validators.maxLength(8), Validators.pattern('[a-zA-Z0-9]*')]],
-    }, 
-    // { validator: Validator.checkNameDuplicated()}
-    )
+    })
   }
 
   get name() {
@@ -59,22 +59,34 @@ export class EditProductComponent implements OnInit {
   }
 
   editProduct() {
-    this.showModalEdit.emit(false);
-
+    console.log('price', this.price?.value);
     const product: ProductModel = {
       name: this.name?.value,
       price: this.price?.value,
       serialNumber: this.serialNumber?.value,
     };
 
-    try {
-      if (this.product.id) {
-        this.productService.updateProduct(this.product.id, product).then((value) => {
-          this.getProducts();
-        });
+    this.products$.subscribe((value) => {
+      this.duplicatedName = (value as Array<ProductModel>).map((product: ProductModel) => product.name).filter((name) => {
+        return name == product.name;
+      })
+        .length > 1;
+      if (!this.duplicatedName) {
+        this.showModalEdit.emit(false);
+
+        try {
+          if (this.product.id) {
+            this.productService.updateProduct(this.product.id, product).then((value) => {
+              this.getProducts();
+            });
+          }
+        } catch (error) {
+        }
       }
-    } catch (error) {
-    }
+    })
+      .unsubscribe();
+
+
   }
 
   getProducts() {
