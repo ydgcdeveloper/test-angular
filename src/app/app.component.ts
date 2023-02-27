@@ -14,6 +14,7 @@ import { ProductService } from './service/product/product.service';
 export class AppComponent {
 
   loading$: Observable<boolean> = new Observable();
+  showModalAdd: boolean = false;
 
   constructor(
     private store: Store<any>,
@@ -27,14 +28,10 @@ export class AppComponent {
     this.store.dispatch(loadProducts())
 
     this.productService.getProducts().then((response: ProductModel[]) => {
-      console.log('value', response);
       this.store.dispatch(loadedProducts({ products: response }))
     });
-
-    // this.productService.addProduct();
-    // this.productService.removeProduct('bJnw8B8qXGDudC5TCTjj').then((value) => {
-    //   console.log('value deleted', value);
-    // });
   }
+
+  
 
 }
