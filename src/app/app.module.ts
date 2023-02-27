@@ -1,5 +1,6 @@
+import { ProductEffects } from './state/effects/product.effects';
 import { ROOT_REDUCERS } from './state/app.state';
-import { productsReducer } from './state/reducers/products.reducer';
+import { productsReducer } from './state/reducers/product.reducers';
 import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -11,6 +12,7 @@ import { ProductComponent } from './component/product/product.component';
 import { ProductUiComponent } from './component/product-ui/product-ui.component';
 import { AddProductComponent } from './component/add-product/add-product.component';
 import { EditProductComponent } from './component/edit-product/edit-product.component';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { EditProductComponent } from './component/edit-product/edit-product.comp
     BrowserModule,
     StoreModule.forRoot(ROOT_REDUCERS),
     StoreDevtoolsModule.instrument({ name: 'TEST' }),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    EffectsModule.forRoot([ProductEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]
