@@ -70,9 +70,7 @@ export class EditProductComponent implements OnInit {
       this.duplicatedName = (value as Array<ProductModel>).map((product: ProductModel) => product.name).filter((name) => {
         return name == product.name;
       })
-        .length > 1 && (value as Array<ProductModel>).map((product: ProductModel) => product.id).filter((id) => {
-          return id == product.id;
-        }).length == 0;
+        .length > 1
       
       if (!this.duplicatedName) {
         this.showModalEdit.emit(false);
