@@ -34,10 +34,11 @@ export class EditProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.products$ = this.store.select(selectProductsList);
+    console.log(this.product);
 
     this.productForm = this.formBuilder.group({
       name: [this.product?.name, [Validators.required, Validators.maxLength(20), Validators.pattern('[a-zA-Z0-9ÑñÁáÉéÍíÓóÚú ]*')]],
-      price: [(this.product?.price).toFixed(2), [Validators.required, Validators.min(this.minPrice), Validators.max(this.maxPrice)]],
+      price: [(parseFloat(this.product?.price as string) as number).toFixed(2), [Validators.required, Validators.min(this.minPrice), Validators.max(this.maxPrice)]],
       serialNumber: [this.product?.serialNumber, [Validators.required, Validators.minLength(8), Validators.maxLength(8), Validators.pattern('[a-zA-Z0-9]*')]],
     })
   }
@@ -59,7 +60,6 @@ export class EditProductComponent implements OnInit {
   }
 
   editProduct() {
-    console.log('price', this.price?.value);
     const product: ProductModel = {
       name: this.name?.value,
       price: this.price?.value,
@@ -70,7 +70,10 @@ export class EditProductComponent implements OnInit {
       this.duplicatedName = (value as Array<ProductModel>).map((product: ProductModel) => product.name).filter((name) => {
         return name == product.name;
       })
-        .length > 1;
+        .length > 1 && (value as Array<ProductModel>).map((product: ProductModel) => product.id).filter((id) => {
+          return id == product.id;
+        }).length == 0;
+      
       if (!this.duplicatedName) {
         this.showModalEdit.emit(false);
 
@@ -85,8 +88,6 @@ export class EditProductComponent implements OnInit {
       }
     })
       .unsubscribe();
-
-
   }
 
   getProducts() {
@@ -95,8 +96,3 @@ export class EditProductComponent implements OnInit {
     });
   }
 }
-
-// export const checkNameDuplicated: ValidatorFn = (id: number) => (control: AbstractControl): ValidationErrors | null => {
-//   const name = control.get('name');
-//   return names.includes(name?.value) ? { duplicated: true } : null;
-// };
