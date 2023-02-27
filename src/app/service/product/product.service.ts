@@ -39,6 +39,6 @@ export class ProductService {
 
   async updateProduct(productId: string, data: any) {
     const product = doc(db, 'product', productId);
-    const res = await updateDoc(product,  data );
+    const res = await updateDoc(product, data);
   }
 }

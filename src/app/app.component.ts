@@ -1,6 +1,6 @@
 import { ProductModel } from './core/models/product.interface';
-import { selectProductsLoading } from './state/selectors/products.selector';
-import { loadedProducts, loadProducts } from './state/actions/products.action';
+import { selectProductsLoading } from './state/selectors/product.selectors';
+import { loadedProducts, loadProducts } from './state/actions/product.actions';
 import { Store } from '@ngrx/store';
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -27,9 +27,9 @@ export class AppComponent {
 
     this.store.dispatch(loadProducts())
 
-    this.productService.getProducts().then((response: ProductModel[]) => {
-      this.store.dispatch(loadedProducts({ products: response }))
-    });
+    // this.productService.getProducts().then((response: ProductModel[]) => {
+    //   this.store.dispatch(loadedProducts({ products: response }))
+    // });
   }
 
   

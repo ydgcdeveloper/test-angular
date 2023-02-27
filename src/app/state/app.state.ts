@@ -1,4 +1,4 @@
-import { productsReducer } from './reducers/products.reducer';
+import { productsReducer } from './reducers/product.reducers';
 import { ActionReducerMap } from '@ngrx/store';
 import { ProductState } from './../core/models/product.state';
 
