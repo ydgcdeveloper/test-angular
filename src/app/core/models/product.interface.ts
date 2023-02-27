@@ -1,5 +1,5 @@
 export interface ProductModel{
-    id: number;
+    id?: string;
     name: string;
     serialNumber: string;
     price: number;
