@@ -37,24 +37,8 @@ export class ProductService {
     return await deleteDoc(product);
   }
 
-  async updateProduct(productId: string, data: {}) {
-    const product = doc(db, 'product');
-    const res = await updateDoc(product, data)
+  async updateProduct(productId: string, data: any) {
+    const product = doc(db, 'product', productId);
+    const res = await updateDoc(product,  data );
   }
-
-
-  // getProducts(): Observable<any> {
-  //   const data: ProductModel[] = [
-  //     {
-  //       id: 1,
-  //       name: 'First One',
-  //       price: 120,
-  //       serialNumber: 'ofjwiohgfienpiefoefvd'
-  //     }
-  //   ];
-
-  //   return of(data).pipe(
-  //     delay(1500)
-  //   );
-  // }
 }
