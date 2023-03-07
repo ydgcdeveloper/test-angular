@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/service/product/product.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { loadedProducts } from 'src/app/state/actions/product.actions';
+import { addProduct, loadedProducts, loadProducts } from 'src/app/state/actions/product.actions';
 
 @Component({
   selector: 'app-add-product',
@@ -27,9 +27,9 @@ export class AddProductComponent implements OnInit {
     private productService: ProductService,
   ) {
     this.productForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.maxLength(20), Validators.pattern('[a-zA-Z0-9ÑñÁáÉéÍíÓóÚú ]*')]],
-      price: ['', [Validators.required, Validators.min(this.minPrice), Validators.max(this.maxPrice)]],
-      serialNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8), Validators.pattern('[a-zA-Z0-9]*')]],
+      name: ['New Name', [Validators.required, Validators.maxLength(20), Validators.pattern('[a-zA-Z0-9ÑñÁáÉéÍíÓóÚú ]*')]],
+      price: ['104', [Validators.required, Validators.min(this.minPrice), Validators.max(this.maxPrice)]],
+      serialNumber: ['hfnshry6', [Validators.required, Validators.minLength(8), Validators.maxLength(8), Validators.pattern('[a-zA-Z0-9]*')]],
     })
   }
 
@@ -70,22 +70,11 @@ export class AddProductComponent implements OnInit {
         this.showModalAdd.emit(false);
 
         try {
-          try {
-            this.productService.addProduct(product).then((value) => {
-              this.getProducts();
-            });
-          } catch (error) {
-          }
+          this.store.dispatch(addProduct({ newProduct: product }))
         } catch (error) {
         }
       }
     })
       .unsubscribe();
-  }
-
-  getProducts() {
-    this.productService.getProducts().then((response: ProductModel[]) => {
-      this.store.dispatch(loadedProducts({ products: response }))
-    });
   }
 }

@@ -24,12 +24,13 @@ export class ProductService {
     return productList;
   }
 
-  async addProduct(product: ProductModel): Promise<string> {
+  async addProduct(product: ProductModel): Promise<ProductModel> {
     const productsCol = collection(db, 'product');
     const res = await addDoc(productsCol,
       product
     );
-    return res.id;
+    console.log("res",res);
+    return { ...product, id: res.id };
   }
 
   async removeProduct(productId: string): Promise<void> {
@@ -37,8 +38,10 @@ export class ProductService {
     return await deleteDoc(product);
   }
 
-  async updateProduct(productId: string, data: any) {
-    const product = doc(db, 'product', productId);
-    const res = await updateDoc(product, data);
+  async updateProduct(product: any): Promise<ProductModel> {
+    const productDoc = doc(db, 'product', product.id);
+    const { id, ...data } = product;
+    const res = await updateDoc(productDoc, data);
+    return product;
   }
 }

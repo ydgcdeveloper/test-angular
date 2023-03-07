@@ -1,3 +1,4 @@
+import { updateProduct } from './../../state/actions/product.actions';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Validator } from './../../validator/validator';
@@ -34,7 +35,6 @@ export class EditProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.products$ = this.store.select(selectProductsList);
-    console.log(this.product);
 
     this.productForm = this.formBuilder.group({
       name: [this.product?.name, [Validators.required, Validators.maxLength(20), Validators.pattern('[a-zA-Z0-9ÑñÁáÉéÍíÓóÚú ]*')]],
@@ -61,6 +61,7 @@ export class EditProductComponent implements OnInit {
 
   editProduct() {
     const product: ProductModel = {
+      id: this.product.id,
       name: this.name?.value,
       price: this.price?.value,
       serialNumber: this.serialNumber?.value,
@@ -71,26 +72,18 @@ export class EditProductComponent implements OnInit {
         return name == product.name;
       })
         .length > 1
-      
+
       if (!this.duplicatedName) {
         this.showModalEdit.emit(false);
 
         try {
           if (this.product.id) {
-            this.productService.updateProduct(this.product.id, product).then((value) => {
-              this.getProducts();
-            });
+            this.store.dispatch(updateProduct({ product }))
           }
         } catch (error) {
         }
       }
     })
       .unsubscribe();
-  }
-
-  getProducts() {
-    this.productService.getProducts().then((response: ProductModel[]) => {
-      this.store.dispatch(loadedProducts({ products: response }))
-    });
   }
 }

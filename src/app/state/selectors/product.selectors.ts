@@ -11,6 +11,6 @@ export const selectProductsList = createSelector(
 );
 
 export const selectProductsLoading = createSelector(
-    selectProductsFeature,
-    (state: ProductState) => state.loading
-  );
+  selectProductsFeature,
+  (state: ProductState) => state.loading
+);
